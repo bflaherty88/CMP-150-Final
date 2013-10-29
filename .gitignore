@@ -1,0 +1,8 @@
+*.csproj
+*.sln
+*.unityproj
+*.suo
+*.blend1
+/Final Project/Library/*
+/Final Project/Temp/*
+/Final Project/obj/*
