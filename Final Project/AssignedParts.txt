@@ -1,0 +1,22 @@
+Brandon - User attack interface
+Evan - user controls
+Mike - enemy controls
+
+
+CORE
++ 2 levels
++ different types of enemies (3)
++ enemies move
++ short range weapon
+
++ some sort of graphics
++ 
+
+
+
+NICE TO HAVE
++ game menu
++ free camera (so its not locked on character)
++ 3 levels
++ long range weapon
++ add support for controller
