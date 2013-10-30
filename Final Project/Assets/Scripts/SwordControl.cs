@@ -1,50 +1,50 @@
 using UnityEngine;
 using System.Collections;
 
-public class SwordControl : MonoBehaviour {
+public class SwordControl : MonoBehaviour 
+{
 
-    protected int swingDirection;
-    protected bool swinging;
+    protected bool swinging, waiting;
+    protected Vector3 startAngle;
 
-    public float swingSpeed;
+    public float damage = 10;
+    public string damageType = "Physical";
 
 	void Start ()
     {
-	
+         
 	}
 	
 	// Update is called once per frame
 	void Update () 
     {
-	    if (Input.GetKeyDown("space"))
-            swing();
-        transform.Rotate(-Vector3.forward * swingSpeed * swingDirection);
+        if (Input.GetKeyDown(KeyCode.Space)) 
+            animation.Play();
+        
 	}
 
-
-    protected void swing()
+    void OnTriggerEnter(Collider other)
+    {
+        other.gameObject.BroadcastMessage("Hit", new Damage(damage, damageType));
+    }
+    /*
+    void swing()
     {
         StartCoroutine(Swing());
     }
 
     IEnumerator Swing()
     {
-        if (!swinging)
+        if (!waiting)
         {
+            waiting = true;
             swinging = true;
-            yield return new WaitForEndOfFrame();
-            swingDirection = 1;
-            yield return new WaitForSeconds(2 / swingSpeed);
-            swingDirection = -1;
-            yield return new WaitForSeconds(2 / swingSpeed);
-            swingDirection = 0;
+            yield return new WaitForSeconds(1 / swingSpeed);
             swinging = false;
         }
         else
             yield return null;
+
     }
-    void OnTriggerEnter(Collider other)
-    {
-        other.gameObject.BroadcastMessage("Hit");
-    }
+    */
 }

@@ -3,6 +3,7 @@
 *.unityproj
 *.suo
 *.blend1
+*.blend1.meta
 /Final Project/Library/*
 /Final Project/Temp/*
 /Final Project/obj/*
