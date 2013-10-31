@@ -5,9 +5,9 @@ public class SwordControl : MonoBehaviour
 {
 
     protected bool swinging, waiting;
-    protected Vector3 startAngle;
 
     public float damage = 10;
+    public float swingTime;
     public string damageType = "Physical";
 
 	void Start ()
@@ -18,16 +18,17 @@ public class SwordControl : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-        if (Input.GetKeyDown(KeyCode.Space)) 
-            animation.Play();
-        
+        if (Input.GetButtonDown("Fire1"))
+            swing();
+        Debug.Log(swinging);
 	}
 
     void OnTriggerEnter(Collider other)
     {
-        other.gameObject.BroadcastMessage("Hit", new Damage(damage, damageType));
+        if (swinging)
+            other.gameObject.BroadcastMessage("Hit", new Damage(damage, damageType), SendMessageOptions.DontRequireReceiver);
     }
-    /*
+    
     void swing()
     {
         StartCoroutine(Swing());
@@ -39,12 +40,15 @@ public class SwordControl : MonoBehaviour
         {
             waiting = true;
             swinging = true;
-            yield return new WaitForSeconds(1 / swingSpeed);
+            animation.Play();
+            yield return new WaitForSeconds(swingTime / 2);
             swinging = false;
+            yield return new WaitForSeconds(swingTime / 2);
+            waiting = false;
         }
         else
             yield return null;
 
     }
-    */
+    
 }
