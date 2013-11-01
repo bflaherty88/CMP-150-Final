@@ -17,13 +17,13 @@ public class BowControl : MonoBehaviour {
 	void Update () 
     {
         firing = bow.animation["Default Take"].enabled;
-	    if (Input.GetKeyDown("space") && !firing)
+	    if (Input.GetButtonDown("Fire1") && !firing)
             fire();
 	}
 
     void fire()
     {
-        bow.animation.Play("Default Take");
+        bow.animation.Play();
         Instantiate(arrow, transform.position, transform.rotation);
     }
 }

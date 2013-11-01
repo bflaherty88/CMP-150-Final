@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class MagicControl : MonoBehaviour 
+public class ProjectileMagicControl : MonoBehaviour 
 {
     protected bool waiting;
 
