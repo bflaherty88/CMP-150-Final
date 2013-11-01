@@ -3,12 +3,12 @@ using System.Collections;
 
 public class Damage 
 {
-    public float value;
+    public float baseDamage;
     public string type;
 
-    public Damage(float pValue, string pType)
+    public Damage(float baseDamage, string type)
     {
-        value = pValue;
-        type = pType;
+        this.baseDamage = baseDamage;
+        this.type = type;
     }
 }

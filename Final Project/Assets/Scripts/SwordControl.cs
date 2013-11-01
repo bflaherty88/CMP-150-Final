@@ -20,7 +20,6 @@ public class SwordControl : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
             swing();
-        Debug.Log(swinging);
 	}
 
     void OnTriggerEnter(Collider other)

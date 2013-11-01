@@ -15,6 +15,6 @@ public class Test : MonoBehaviour {
 	}
     void Hit(Damage testDam)
     {
-        Debug.Log("Value: " + testDam.value + "\nType: " + testDam.type);
+        Debug.Log("Value: " + testDam.baseDamage + "\nType: " + testDam.type);
     }
 }

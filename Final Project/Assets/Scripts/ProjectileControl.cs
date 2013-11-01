@@ -5,6 +5,7 @@ public class ProjectileControl : MonoBehaviour {
 
     public float speed, lifeSpan, damage;
     public string damageType;
+    public Transform explosion;
 
 	// Use this for initialization
 	void Start () 
@@ -28,5 +29,10 @@ public class ProjectileControl : MonoBehaviour {
     {
         other.BroadcastMessage("Hit", new Damage(damage, damageType), SendMessageOptions.DontRequireReceiver);
         Destroy(this.gameObject);
+    }
+
+    void OnDestroy()
+    {
+        Instantiate(explosion, transform.position, transform.rotation);
     }
 }
