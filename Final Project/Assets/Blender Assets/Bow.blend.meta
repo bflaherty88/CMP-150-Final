@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: 86ef7eb6a635ad949aab836fbd82510c
+labels:
+- Weapon
 ModelImporter:
   serializedVersion: 15
   fileIDToRecycleName:
@@ -26,8 +28,9 @@ ModelImporter:
     400018: //RootNode
     400020: Cylinder
     4300000: Cylinder
-    7400000: Default Take
+    7400000: Draw
     7400002: Fire
+    7400004: Release
     9500000: //RootNode
     11100000: //RootNode
     13700000: Cylinder
@@ -44,8 +47,8 @@ ModelImporter:
     animationScaleError: .5
     animationWrapMode: 0
     clipAnimations:
-    - name: Default Take
-      takeName: Default Take
+    - name: Fire
+      takeName: ArmatureAction_001
       firstFrame: 0
       lastFrame: 29
       wrapMode: 0
@@ -65,9 +68,30 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       transformMask: []
-    - name: Fire
-      takeName: ArmatureAction_001
+    - name: Draw
+      takeName: Default Take
       firstFrame: 0
+      lastFrame: 25
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      transformMask: []
+    - name: Release
+      takeName: Default Take
+      firstFrame: 26
       lastFrame: 29
       wrapMode: 0
       orientationOffsetY: 0
