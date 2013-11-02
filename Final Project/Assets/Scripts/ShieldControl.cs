@@ -6,7 +6,7 @@ public class ShieldControl : MonoBehaviour {
 
 	void Start ()
     {
-        animation["Down"].time = animation["Down"].length;
+        animation["Up"].speed = -1;
 	}
 	
 	// Update is called once per frame
@@ -14,16 +14,17 @@ public class ShieldControl : MonoBehaviour {
     {
         if (Input.GetButtonDown("Fire2"))
         {
-            if (animation["Down"].time > animation["Down"].length)
-                animation["Down"].time = animation["Down"].length;
-            animation["Down"].speed = -1;
+            if (animation["Up"].time < 0)
+                animation["Up"].time = 0;
+            animation["Up"].speed = 1;
         }
         else if (Input.GetButtonUp("Fire2"))
         {
-            if (animation["Down"].time < 0)
-                animation["Down"].time = 0;
-            animation["Down"].speed = 1;
+            if (animation["Up"].time > animation["Up"].length)
+                animation["Up"].time = animation["Up"].length;
+            animation["Up"].speed = -1;
         }
-        animation.Play("Down");
+        animation.Play("Up");
+        Debug.Log(animation["Up"].time);
 	}
 }

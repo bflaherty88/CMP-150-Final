@@ -7,6 +7,8 @@ public class ProjectileControl : MonoBehaviour {
     public string damageType;
     public Transform explosion;
 
+    protected bool closing;
+
 	// Use this for initialization
 	void Start () 
     {
@@ -31,8 +33,14 @@ public class ProjectileControl : MonoBehaviour {
         Destroy(this.gameObject);
     }
 
+    void OnApplicationQuit()
+    {
+        closing = true;
+    }
+
     void OnDestroy()
     {
-        Instantiate(explosion, transform.position, transform.rotation);
+        if (!closing)
+            Instantiate(explosion, transform.position, transform.rotation);
     }
 }
