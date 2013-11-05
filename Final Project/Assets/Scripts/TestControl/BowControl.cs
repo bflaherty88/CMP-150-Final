@@ -5,8 +5,9 @@ public class BowControl : MonoBehaviour {
 
     public Transform arrow, specialArrow;
     public GameObject bow;
+    public XInput xInput;
 
-    protected bool firing, released;
+    protected bool firing1, firing2, released1, released2, fireDown1, fireDown2, fireUp1, fireUp2, wasDown1, wasDown2;
     protected GameObject tempArrow;
 
 	void Start () 
@@ -16,40 +17,66 @@ public class BowControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
     {
-	    if (Input.GetButtonDown("Fire1") && !firing)
-            draw();
-        else if(Input.GetButtonDown("Fire2") && !firing)
-            drawSpecial();
+        if (InputController.controllerMode)
+        {
+            fireDown1 = xInput.rTriggerDown;
+            fireDown2 = xInput.lTriggerDown;
+            fireUp1 = xInput.rTriggerUp;
+            fireUp2 = xInput.lTriggerUp;
+        }
+        else
+        {
+            fireDown1 = Input.GetButtonDown("Fire1");
+            fireDown2 = Input.GetButtonDown("Fire2");
+            fireUp1 = Input.GetButtonUp("Fire1");
+            fireUp2 = Input.GetButtonUp("Fire2");
+        }
 
-        released = (Input.GetButtonUp("Fire1") || Input.GetButtonUp("Fire2")) && firing ? true : released;
+        released1 = fireUp1 && firing1 ? true : released1;
+        released2 = fireUp2 && firing2 ? true : released2;
 
-        if (released && !bow.animation["Draw"].enabled)
-            release();
+        if (fireDown1)
+            draw1();
+        else if (fireDown2)
+            draw2();
+
+        if (released1 && !bow.animation["Draw"].enabled)
+            release1();
+        else if (released2 && !bow.animation["Draw"].enabled)
+            release2();
 
 	}
 
-    void draw()
+    void draw1()
     {
-        firing = true;
+        firing1 = true;
         tempArrow = ((Transform)Instantiate(arrow, transform.position, transform.rotation)).gameObject;
         tempArrow.transform.parent = transform;
         bow.animation.Play("Draw");
         tempArrow.BroadcastMessage("Draw");
     }
 
-    void drawSpecial()
+    void draw2()
     {
-        firing = true;
+        firing2 = true;
         tempArrow = ((Transform)Instantiate(specialArrow, transform.position, transform.rotation)).gameObject;
         tempArrow.transform.parent = transform;
         bow.animation.Play("Draw");
         tempArrow.BroadcastMessage("Draw");
     }
 
-    void release()
+    void release1()
     {
-        released = false;
-        firing = false;
+        released1 = false;
+        firing1 = false;
+        bow.animation.Play("Release");
+        tempArrow.BroadcastMessage("Release");
+    }
+
+    void release2()
+    {
+        released2 = false;
+        firing2 = false;
         bow.animation.Play("Release");
         tempArrow.BroadcastMessage("Release");
     }
