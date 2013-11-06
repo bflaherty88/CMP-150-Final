@@ -8,7 +8,6 @@ CORE
 + different types of enemies (3)
 + enemies move
 + short range weapon
-
 + some sort of graphics
 + 
 
@@ -20,3 +19,5 @@ NICE TO HAVE
 + 3 levels
 + long range weapon
 + add support for controller
++ split screen coop
++
