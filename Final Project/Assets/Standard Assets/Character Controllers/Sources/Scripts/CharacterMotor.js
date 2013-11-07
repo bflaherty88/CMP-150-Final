@@ -1,12 +1,8 @@
-#pragma strict
-#pragma implicit
-#pragma downcast
-
-// Does this script currently respond to input?
+//github.com/bflaherty88/CMP-150-Final.git// Does this script currently respond to input?
 var canControl : boolean = true;
 
 var useFixedUpdate : boolean = true;
-
+//github.com/bflaherty88/CMP-150-Final.git
 // For the next variables, @System.NonSerialized tells Unity to not serialize the variable or show it in the inspector view.
 // Very handy for organization!
 
