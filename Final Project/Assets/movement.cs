@@ -53,7 +53,7 @@ public class movement : MonoBehaviour
 	{
 		
 		Vector3 moveVec = Vector3.zero;
-	
+	    // You need to add an if (Controller.isGrounded) statement to ensure player cannot control character when in air
 		if (MoveLeft.IsActive)
 		{
 		    moveVec.x -=Movespeed;
@@ -73,7 +73,7 @@ public class movement : MonoBehaviour
 						
 		}
 		
-        if(!prevflags.Has(CollisionFlags.CollidedBelow))
+        if(!prevflags.Has(CollisionFlags.CollidedBelow)) // This is not necessary nor is the extensions class above.
 		{
 		
 			moveVec.y -= Gravity;

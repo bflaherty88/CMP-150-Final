@@ -53,8 +53,8 @@ public class EnemyAI : MonoBehaviour
             drawObject.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
 
-        if (prevFlags.Has(CollisionFlags.Sides))
-        {
+        if (prevFlags.Has(CollisionFlags.Sides))  // This style of patrolling enemies won't fit in the dungeon crawler setting
+        {                                         // You need to have enemies actively attack players when within a specified range
             directionChange = !directionChange;
         }
 
