@@ -4,10 +4,9 @@ using System.Collections;
 public class SwordControl : MonoBehaviour 
 {
 
-    protected bool swinging, waiting;
+    protected bool swinging, waiting, wasDown;
 
     public float damage = 10;
-    public float swingTime;
     public string damageType = "Physical";
 
 	void Start ()
@@ -18,36 +17,35 @@ public class SwordControl : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
+        waiting = (animation["Down"].enabled || animation["Up"].enabled);
         if (Input.GetButtonDown("Fire1"))
             swing();
+
+        swinging = animation["Down"].enabled;
+
+        if (!animation["Down"].enabled && wasDown)
+        {
+            animation.Play("Up");
+            wasDown = false;
+        }
+
+        wasDown = animation["Down"].enabled;
 	}
 
     void OnTriggerEnter(Collider other)
     {
         if (swinging)
-            other.gameObject.BroadcastMessage("Hit", new Damage(damage, damageType), SendMessageOptions.DontRequireReceiver);
+        {
+            other.gameObject.BroadcastMessage("Hit", new Damage(damage, damageType), SendMessageOptions.RequireReceiver);
+            Debug.Log("Sword Hit");
+        }
     }
     
     void swing()
     {
-        StartCoroutine(Swing());
-    }
-
-    IEnumerator Swing()
-    {
         if (!waiting)
-        {
-            waiting = true;
-            swinging = true;
-            animation.Play();
-            yield return new WaitForSeconds(swingTime / 2);
-            swinging = false;
-            yield return new WaitForSeconds(swingTime / 2);
-            waiting = false;
-        }
-        else
-            yield return null;
-
+            animation.Play("Down");
     }
+
     
 }

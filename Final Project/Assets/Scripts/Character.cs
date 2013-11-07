@@ -4,7 +4,7 @@ using System.Collections;
 public class Character : MonoBehaviour 
 {
 
-    public float health, physicalResistance, magicResistance, knockbackResistance, moveSpeed;
+    public float health = 100, stamina = 100, physicalResistance = 1, magicResistance = 1, knockbackResistance = 1, moveSpeed = 10;
 
     protected Vector3 knockback;
     protected int effectTime = 5;
@@ -52,8 +52,9 @@ public class Character : MonoBehaviour
         }
         else if (attack.type == "Frost")
         {
-            moveSpeed *= (3f / 4f);
+            moveSpeed *= 0.99f;
             yield return new WaitForSeconds(effectTime / 2f);
+            moveSpeed /= 0.99f;
         }
     }
 }

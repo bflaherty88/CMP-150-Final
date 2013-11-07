@@ -25,6 +25,5 @@ public class ShieldControl : MonoBehaviour {
             animation["Up"].speed = -1;
         }
         animation.Play("Up");
-        Debug.Log(animation["Up"].time);
 	}
 }

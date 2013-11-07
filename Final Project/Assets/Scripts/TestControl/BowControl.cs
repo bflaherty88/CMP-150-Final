@@ -35,9 +35,9 @@ public class BowControl : MonoBehaviour {
         released1 = fireUp1 && firing1 ? true : released1;
         released2 = fireUp2 && firing2 ? true : released2;
 
-        if (fireDown1)
+        if (fireDown1 && !(firing1 || firing2))
             draw1();
-        else if (fireDown2)
+        else if (fireDown2 && !(firing1 || firing2))
             draw2();
 
         if (released1 && !bow.animation["Draw"].enabled)

@@ -22,9 +22,9 @@ public class ConcentrationMagicControl : MonoBehaviour {
         particles.enableEmission = firing;
 	}
 
-    void OnTriggirEnter (Collider other)
+    void OnTriggerStay (Collider other)
     {
         if (firing)
-            other.BroadcastMessage("Hit", new Damage(damage, damageType, knockback), SendMessageOptions.DontRequireReceiver);
+            other.gameObject.BroadcastMessage("Hit", new Damage(damage, damageType, knockback), SendMessageOptions.DontRequireReceiver);
     }
 }

@@ -4,6 +4,13 @@ using System.Collections;
 public class InputController : MonoBehaviour {
 
     public static bool controllerMode = false;
+    public static int PlayerCount
+    {
+        get { return playerCount; }
+        set { playerCount = (value > 0 || value <= 4) ? value : playerCount; }
+    }
+
+    protected static int playerCount;
 
 	// Use this for initialization
 	void Start () {
