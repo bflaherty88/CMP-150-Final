@@ -7,7 +7,7 @@ public class InputController : MonoBehaviour {
     public static int PlayerCount
     {
         get { return playerCount; }
-        set { playerCount = (value > 0 || value <= 4) ? value : playerCount; }
+        set { playerCount = (value <= 4 && value > 0) ? value : playerCount; }
     }
 
     protected static int playerCount;
@@ -18,7 +18,7 @@ public class InputController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
+	void Update () 
+    {
 	}
 }

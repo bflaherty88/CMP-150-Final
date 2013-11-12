@@ -3,7 +3,6 @@ using System.Collections;
 
 public class WorldController : MonoBehaviour {
 
-    public bool useController;
     public int playerCount;    
 
 	void Start () 
@@ -14,7 +13,6 @@ public class WorldController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
     {
-        InputController.controllerMode = useController;
         InputController.PlayerCount = playerCount;
 	}
 }
