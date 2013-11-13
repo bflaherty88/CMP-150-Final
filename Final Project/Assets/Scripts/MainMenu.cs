@@ -8,6 +8,7 @@ public class MainMenu : MonoBehaviour
     public Texture[] baseTextures;
     public Texture[] activeTextures;
     public float offset, scale = 1500;
+    public CustomInput input;
 
     bool mouseMode;
     int selected, selectedL;
@@ -36,23 +37,34 @@ public class MainMenu : MonoBehaviour
         else
             content[selected] = baseTextures[selected];
         */
-
-        if (Input.GetKeyDown(KeyCode.DownArrow) && selected < content.Length - 1 && !Input.GetKey(KeyCode.Return))
-        {
-            selected++;
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow) && selected > 0 && !Input.GetKey(KeyCode.Return))
-        {
-            selected--;
-        }
-
         if (!InputController.controllerMode)
         {
+            if (input.GetDown(input.down) && selected < content.Length - 1 && !input.GetDown(input.activate))
+            {
+                selected++;
+            }
+            else if (input.GetDown(input.up) && selected > 0 && !input.GetDown(input.activate))
+            {
+                selected--;
+            }
             if (mouseMode)
+            {
                 for (int i = 0; i < elementRects.Length; i++)
                 {
                     selected = elementRects[i].Contains(current.mousePosition) ? i : selected;
                 }
+            }
+        }
+        else
+        {
+            if (input.GetDown(input.down) && selected < content.Length - 1 && !input.GetDown(input.activate))
+            {
+                selected++;
+            }
+            else if (input.GetDown(input.down) && selected > 0 && !input.GetDown(input.activate))
+            {
+                selected--;
+            }
         }
 
         if (selected != selectedL)

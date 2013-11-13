@@ -16,10 +16,14 @@ public class CustomInput : MonoBehaviour
     public string
         xHorizontal = "Move X",
         xVertical = "Move Y",
+        xAimHorizontal = "Aim X",
+        xAimVertical = "Aim Y",
         xJump = "A Button",
         xFire1 = "R Trigger",
         xFire2 = "L Trigger",
         xActivate = "X Button";
+
+    public Vector3 RStickLocation { get { return new Vector3(Input.GetAxis(uAimHorizontal), Input.GetAxis(uAimHorizontal)); } }
 
     public string uHorizontal { get { return controllerString + xHorizontal ; } }
     public string uVertical { get { return controllerString + xVertical; } }
@@ -27,6 +31,8 @@ public class CustomInput : MonoBehaviour
     public string uFire1 { get { return controllerString + xFire1; } }
     public string uFire2 { get { return controllerString + xFire2; } }
     public string uActivate { get { return controllerString + xActivate; } }
+    public string uAimHorizontal { get { return controllerString + xAimHorizontal ; } }
+    public string uAimVertical { get { return controllerString + xAimHorizontal ; } }
 
     public int controllerNumber = 1;
 
@@ -42,7 +48,6 @@ public class CustomInput : MonoBehaviour
 
 	void Update () 
     {
-
         rTriggerWasDown = Input.GetAxis(controllerString + "R Trigger") > 0.5f;
         lTriggerWasDown = Input.GetAxis(controllerString + "L Trigger") > 0.5f;
         horizontalWasRest = Input.GetAxis(uHorizontal) < 0.25f && Input.GetAxis(uHorizontal) > -0.25f;
