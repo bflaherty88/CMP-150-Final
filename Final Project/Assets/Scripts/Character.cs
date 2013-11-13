@@ -4,7 +4,7 @@ using System.Collections;
 public class Character : MonoBehaviour 
 {
 
-    public float health = 100, stamina = 100, physicalResistance = 1, magicResistance = 1, knockbackResistance = 1, moveSpeed = 10;
+    public float health = 100, stamina = 100, physicalResistance = 1, magicResistance = 1, knockbackResistance = 1, moveSpeed = 10, jumpHeight = 10;
 
     protected Vector3 knockback;
     protected int effectTime = 5;

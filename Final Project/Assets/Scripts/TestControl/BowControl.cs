@@ -17,6 +17,7 @@ public class BowControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
     {
+
         if (InputController.controllerMode)
         {
             fireDown1 = xInput.rTriggerDown;
