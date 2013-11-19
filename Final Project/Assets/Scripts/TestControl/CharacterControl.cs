@@ -5,8 +5,11 @@ using System.Collections;
 public class CharacterControl : Character {
 
     CharacterController controller;
-    Vector3 calcVec, moveVec;
+    Vector3 moveVec;
     public CustomInput input;
+    public float gravity = 1, drag = 1, maxSpeed = 15;
+
+    float moveSpeed;
 
 	void Start () 
     {
@@ -16,29 +19,53 @@ public class CharacterControl : Character {
 	// Update is called once per frame
 	void Update () 
     {
-        Debug.Log(InputController.controllerMode);
         if (controller.isGrounded)
         {
             if (input.GetState(input.right))
             {
-                Debug.Log("Something");
-                calcVec += Vector3.right * moveSpeed;
+                moveSpeed += acceleration;
             }
-            else if (input.GetState(input.left))
-                calcVec -= Vector3.left * moveSpeed;
-            else
-                calcVec.x = 0;
+            if (input.GetState(input.left))
+                moveSpeed -= acceleration;
+
+            if (moveSpeed != 0)
+                moveSpeed -= moveSpeed * drag;
 
             if (input.GetDown(input.jump))
-                calcVec += Vector3.up * jumpHeight;
+            {
+                moveVec.y += jumpHeight;
+            }
+            else
+                moveVec.y = 0;
         }
-        else
-            calcVec -= Vector3.up * Time.deltaTime;
+        
+        moveVec -= Vector3.up * gravity;
 
-        calcVec += knockback;
+        if (moveSpeed > maxSpeed)
+            moveSpeed = maxSpeed;
+        else if (moveSpeed < -maxSpeed)
+            moveSpeed = -maxSpeed;
+
+        moveVec.x = moveSpeed;
+
+
+        moveVec += knockback;
         knockback = Vector3.zero;
-
-        moveVec = transform.InverseTransformDirection(calcVec);
-        controller.Move(moveVec);
+        controller.Move(moveVec * Time.deltaTime);
 	}
+
+    void OnControllerColliderHit (ControllerColliderHit hit)
+    {
+        if (Mathf.Abs(hit.point.x - transform.position.x) > controller.radius)
+        {
+            if (hit.point.x > transform.position.x && moveSpeed > 0)
+            {
+                moveSpeed = 0;
+            }
+            else if (hit.point.x < transform.position.x && moveSpeed < 0)
+            {
+                moveSpeed = 0;
+            }
+        }
+    }
 }

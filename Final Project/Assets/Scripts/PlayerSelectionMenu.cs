@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class MainMenu : MonoBehaviour 
+public class PlayerSelectionMenu : MonoBehaviour 
 {
 
     Texture[] content;
@@ -23,7 +23,7 @@ public class MainMenu : MonoBehaviour
             content[i] = baseTextures[i];
         content[selected] = activeTextures[selected];
         elementRects = new Rect[baseTextures.Length];
-        oldPos = Input.mousePosition;
+        
 	}
 
 
@@ -31,39 +31,31 @@ public class MainMenu : MonoBehaviour
     {
         newPos = Input.mousePosition;
         mouseMode = newPos != oldPos;
-        /*
-        if (Input.GetKey(KeyCode.Return))
-            content[selected] = activeTextures[selected];
-        else
-            content[selected] = baseTextures[selected];
-        */
-        if (!InputController.controllerMode)
+
+        if (input.GetDown(input.activate) || input.GetDown(input.fire1))
         {
-            if (input.GetDown(input.down) && selected < content.Length - 1 && !input.GetDown(input.activate))
-            {
-                selected++;
-            }
-            else if (input.GetDown(input.up) && selected > 0 && !input.GetDown(input.activate))
-            {
-                selected--;
-            }
-            if (mouseMode)
+            if (selected == 0)
+                Debug.Log("Singleplayer");
+            else
+                Debug.Log("Multiplayer");
+        }
+
+        if (input.GetDown(input.down) && selected < content.Length - 1 && !input.GetDown(input.activate))
+        {
+            selected++;
+        }
+        else if (input.GetDown(input.up) && selected > 0 && !input.GetDown(input.activate))
+        {
+            selected--;
+        }
+        if (mouseMode)
+        {
+            if (current != null)
             {
                 for (int i = 0; i < elementRects.Length; i++)
                 {
                     selected = elementRects[i].Contains(current.mousePosition) ? i : selected;
                 }
-            }
-        }
-        else
-        {
-            if (input.GetDown(input.down) && selected < content.Length - 1 && !input.GetDown(input.activate))
-            {
-                selected++;
-            }
-            else if (input.GetDown(input.down) && selected > 0 && !input.GetDown(input.activate))
-            {
-                selected--;
             }
         }
 

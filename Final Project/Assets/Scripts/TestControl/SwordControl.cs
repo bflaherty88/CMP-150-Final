@@ -8,17 +8,19 @@ public class SwordControl : MonoBehaviour
 
     public float damage = 10;
     public string damageType = "Physical";
+    public CustomInput input;
 
 	void Start ()
     {
-         
+        if (input == null)
+            GetInput(gameObject);
 	}
 	
 	// Update is called once per frame
 	void Update () 
     {
         waiting = (animation["Down"].enabled || animation["Up"].enabled);
-        if (Input.GetButtonDown("Fire1"))
+        if (input.GetDown(input.fire1))
             swing();
 
         swinging = animation["Down"].enabled;
@@ -37,7 +39,6 @@ public class SwordControl : MonoBehaviour
         if (swinging)
         {
             other.gameObject.BroadcastMessage("Hit", new Damage(damage, damageType), SendMessageOptions.RequireReceiver);
-            Debug.Log("Sword Hit");
         }
     }
     
@@ -47,5 +48,15 @@ public class SwordControl : MonoBehaviour
             animation.Play("Down");
     }
 
-    
+    void GetInput(GameObject gObject)
+    {
+        input = gObject.GetComponent<CustomInput>();
+        if (input == null)
+        {
+            if (gObject.transform.parent.gameObject != null)
+                GetInput(gObject.transform.parent.gameObject);
+            else
+                Debug.LogError("No CustomInput script on hierarchy.");
+        }
+    }
 }

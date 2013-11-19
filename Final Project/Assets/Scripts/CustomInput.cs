@@ -102,7 +102,7 @@ public class CustomInput : MonoBehaviour
     public bool GetUp(KeyCode key)
     {
         if (!InputController.controllerMode)
-            return Input.GetKeyDown(key);
+            return Input.GetKeyUp(key);
         else
         {
             if (key == left)

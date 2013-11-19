@@ -5,7 +5,7 @@ using System.Collections;
 public class CameraControl : MonoBehaviour 
 {
     public GameObject player;
-    public float keyhole, moveSpeed;
+    public float keyhole, offset, moveSpeed;
     public int playerNum;
 	
 	void Start () 
@@ -30,15 +30,18 @@ public class CameraControl : MonoBehaviour
                 gameObject.camera.rect = (playerNum < 3) ? new Rect((playerNum == 1) ? 0f : 0.5f, 0.5f, 0.5f, 0.5f) : new Rect((playerNum == 3) ? 0f : 0.5f, 0f, 0.5f, 0.5f);
                 break;
         }
-        
-        if (transform.position.x > player.transform.position.x + keyhole)
-            transform.Translate(-Vector3.right * moveSpeed * Time.deltaTime);
-        else if (transform.position.x < player.transform.position.x - keyhole)
-            transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
 
-        if (transform.position.y > player.transform.position.y + keyhole)
-            transform.Translate(-Vector3.up * moveSpeed * Time.deltaTime);
-        else if (transform.position.y < player.transform.position.y - keyhole)
-            transform.Translate(-Vector3.up * moveSpeed * Time.deltaTime);
+        if (Mathf.Abs(player.transform.position.x - (transform.position.x - offset)) > keyhole)
+            transform.Translate(Vector3.right * (player.transform.position.x - (transform.position.x - offset)) * moveSpeed * Time.deltaTime);
 	}
+    void OnCollisionStay(Collision info)
+    {
+        foreach (ContactPoint contact in info.contacts)
+        {
+            if (contact.point.x > transform.position.x)
+                moveSpeed = moveSpeed > 0 ? 0 : moveSpeed;
+            else if (contact.point.x < transform.position.x)
+                moveSpeed = moveSpeed < 0 ? 0 : moveSpeed;
+        }
+    }
 }
