@@ -20,6 +20,7 @@ public class Control : MonoBehaviour
         {
             if (inputs.Contains(input)) continue;
             inputs.Add(input);
+			
         }
 	}
 	
@@ -33,6 +34,7 @@ public class Control : MonoBehaviour
             {
                 isActive = true;
                 //break;
+				
             }
         }
       
