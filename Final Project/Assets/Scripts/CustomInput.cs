@@ -22,8 +22,9 @@ public class CustomInput : MonoBehaviour
         xFire1 = "R Trigger",
         xFire2 = "L Trigger",
         xActivate = "X Button";
+    public FindAim findAim;
 
-    public Vector3 RStickLocation { get { return new Vector3(Input.GetAxis(uAimHorizontal), Input.GetAxis(uAimHorizontal)); } }
+    public Vector3 AimVector { get { return InputController.controllerMode ? new Vector3(Input.GetAxis(uAimHorizontal), Input.GetAxis(uAimHorizontal)) : findAim.aim; } }
 
     public string uHorizontal { get { return controllerString + xHorizontal ; } }
     public string uVertical { get { return controllerString + xVertical; } }
@@ -43,6 +44,8 @@ public class CustomInput : MonoBehaviour
 	void Start () 
     {
         InputController.PlayerCount += 1;
+        if (findAim == null)
+            findAim = GameObject.FindGameObjectWithTag("Camera" + controllerNumber).GetComponent<FindAim>();
 	}
 	
 

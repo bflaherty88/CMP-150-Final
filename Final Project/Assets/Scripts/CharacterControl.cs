@@ -54,6 +54,11 @@ public class CharacterControl : Character {
         moveVec += knockback;
         knockback = Vector3.zero;
         controller.Move(moveVec * Time.deltaTime);
+
+        if (input.AimVector.x > transform.position.x)
+            transform.LookAt(transform.position + Vector3.right);
+        else
+            transform.LookAt(transform.position - Vector3.right);
 	}
 
     void OnControllerColliderHit (ControllerColliderHit hit)
