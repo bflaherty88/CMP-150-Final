@@ -4,10 +4,20 @@ ModelImporter:
   serializedVersion: 15
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Feather
+    100004: Hat
     400000: //RootNode
+    400002: Feather
+    400004: Hat
     2300000: //RootNode
+    2300002: Feather
+    2300004: Hat
     3300000: //RootNode
+    3300002: Feather
+    3300004: Hat
     4300000: Cylinder
+    4300002: Feather
+    4300004: Hat
     7400000: Default Take
     9500000: //RootNode
   materials:
