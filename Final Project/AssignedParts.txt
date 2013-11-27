@@ -1,6 +1,6 @@
-Brandon - User attack interface
-Evan - user controls
-Mike - enemy controls
+Brandon - flaherty.brandon - User attack interface
+Evan - gerard.evan - user controls
+Mike - smith.michael912 - enemy controls
 
 
 CORE

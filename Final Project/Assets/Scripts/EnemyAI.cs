@@ -20,7 +20,6 @@ public class EnemyAI : Character
     // Update is called once per frame
     void Update()
     {
-        Vector3 moveVec = Vector3.zero;
         foreach (GameObject player in players)
         {
             if (player.transform.position.x < transform.position.x)
