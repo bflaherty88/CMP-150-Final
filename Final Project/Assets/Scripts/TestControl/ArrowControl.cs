@@ -1,17 +1,18 @@
 using UnityEngine;
 using System.Collections;
 
-public class ArrowControl : MonoBehaviour {
+public class ArrowControl : Weapon {
 
-    public float speed, length, damage, effectDamage;
+    public float speed, length;
     public GameObject arrow;
-    public string damageType, effectType;
+    public Damage specialDamage;
 
     protected bool released, flying;
     protected RaycastHit hit;
 
 	void Start () 
     {
+        baseDamage = transform.parent.gameObject.GetComponent<Weapon>().baseDamage;
 	}
 	
 	// Update is called once per frame
@@ -24,9 +25,9 @@ public class ArrowControl : MonoBehaviour {
             transform.Translate(Vector3.forward * speed * Time.deltaTime);
             if (Physics.Raycast(transform.position, transform.forward, out hit, length) && !hit.collider.isTrigger)
             {
-                hit.collider.gameObject.BroadcastMessage("Hit", new Damage(damage, damageType), SendMessageOptions.DontRequireReceiver);
-                if (effectDamage != 0)
-                    hit.collider.gameObject.BroadcastMessage("Hit", new Damage(effectDamage, effectType, 0f), SendMessageOptions.DontRequireReceiver);
+                hit.collider.gameObject.BroadcastMessage("Hit", baseDamage, SendMessageOptions.DontRequireReceiver);
+                if (specialDamage.baseDamage != 0)
+                    hit.collider.gameObject.BroadcastMessage("Hit", specialDamage, SendMessageOptions.DontRequireReceiver);
                 Destroy(this.gameObject);
             }
         }

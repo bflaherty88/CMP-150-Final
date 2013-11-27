@@ -1,37 +1,28 @@
 using UnityEngine;
 using System.Collections;
 
-public class BowControl : MonoBehaviour {
+public class BowControl : Weapon {
 
     public Transform arrow, specialArrow;
     public GameObject bow;
-    public XInput xInput;
+    public CustomInput input;
 
     protected bool firing1, firing2, released1, released2, fireDown1, fireDown2, fireUp1, fireUp2, wasDown1, wasDown2;
     protected GameObject tempArrow;
 
 	void Start () 
     {
+        if (input == null)
+            input = GetInput(gameObject);
 	}
 	
 	// Update is called once per frame
 	void Update () 
     {
-
-        if (InputController.controllerMode)
-        {
-            fireDown1 = xInput.rTriggerDown;
-            fireDown2 = xInput.lTriggerDown;
-            fireUp1 = xInput.rTriggerUp;
-            fireUp2 = xInput.lTriggerUp;
-        }
-        else
-        {
-            fireDown1 = Input.GetButtonDown("Fire1");
-            fireDown2 = Input.GetButtonDown("Fire2");
-            fireUp1 = Input.GetButtonUp("Fire1");
-            fireUp2 = Input.GetButtonUp("Fire2");
-        }
+        fireDown1 = input.GetDown(input.fire1);
+        fireDown2 = input.GetDown(input.fire2);
+        fireUp1 = input.GetUp(input.fire1);
+        fireUp2 = input.GetUp(input.fire2);
 
         released1 = fireUp1 && firing1 ? true : released1;
         released2 = fireUp2 && firing2 ? true : released2;

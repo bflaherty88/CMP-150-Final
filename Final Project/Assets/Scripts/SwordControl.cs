@@ -1,19 +1,16 @@
 using UnityEngine;
 using System.Collections;
 
-public class SwordControl : MonoBehaviour 
+public class SwordControl : Weapon
 {
 
     protected bool swinging, waiting, wasDown;
-
-    public float damage = 10;
-    public string damageType = "Physical";
     public CustomInput input;
 
 	void Start ()
     {
         if (input == null)
-            GetInput(gameObject);
+            input = GetInput(gameObject);
 	}
 	
 	// Update is called once per frame
@@ -38,7 +35,7 @@ public class SwordControl : MonoBehaviour
     {
         if (swinging)
         {
-            other.gameObject.BroadcastMessage("Hit", new Damage(damage, damageType), SendMessageOptions.RequireReceiver);
+            other.gameObject.BroadcastMessage("Hit", baseDamage, SendMessageOptions.RequireReceiver);
         }
     }
     
@@ -46,17 +43,5 @@ public class SwordControl : MonoBehaviour
     {
         if (!waiting)
             animation.Play("Down");
-    }
-
-    void GetInput(GameObject gObject)
-    {
-        input = gObject.GetComponent<CustomInput>();
-        if (input == null)
-        {
-            if (gObject.transform.parent.gameObject != null)
-                GetInput(gObject.transform.parent.gameObject);
-            else
-                Debug.LogError("No CustomInput script on hierarchy.");
-        }
     }
 }

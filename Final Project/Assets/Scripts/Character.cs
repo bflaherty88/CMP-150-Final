@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Character : MonoBehaviour 
+public class Character : Controllable
 {
 
     public float health = 100, stamina = 100, physicalResistance = 1, magicResistance = 1, knockbackResistance = 1, acceleration = 10, jumpHeight = 10;
