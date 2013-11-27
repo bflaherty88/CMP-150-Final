@@ -1,30 +1,30 @@
 using UnityEngine;
 using System.Collections;
 
-public class ConcentrationMagicControl : MonoBehaviour {
-
-    public float damage, knockback;
-    public string damageType;
+public class ConcentrationMagicControl : Weapon 
+{
+    
     public ParticleSystem particles;
+    public CustomInput input;
 
     protected bool firing;
-	
 
 	void Start () 
     {
-	
+        if (input == null)
+            input = GetInput(gameObject);
 	}
 	
 	// Update is called once per frame
 	void Update () 
     {
-        firing = Input.GetButton("Fire1");
+        firing = input.GetState(input.fire1);
         particles.enableEmission = firing;
 	}
 
     void OnTriggerStay (Collider other)
     {
         if (firing)
-            other.gameObject.BroadcastMessage("Hit", new Damage(damage, damageType, knockback), SendMessageOptions.DontRequireReceiver);
+            other.gameObject.BroadcastMessage("Hit", baseDamage, SendMessageOptions.DontRequireReceiver);
     }
 }
