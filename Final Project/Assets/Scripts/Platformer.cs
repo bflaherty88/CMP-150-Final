@@ -31,27 +31,13 @@ public class Platformer : MonoBehaviour
 	
 	
 	public float  Gravity = 9,
-		          Jumpspeed = 20,
+		          Jumpstrength = 20,
 			      Movespeed = 30;
-	
-	
-
-  
-
-   
-
- 
-
-    private Vector3 moveDirection = Vector3.zero;
-
-    private bool grounded = false;
 	
 	public GameObject drawObject; 
 
 	private CollisionFlags prevflags;
 	private CharacterController Controller;
-	
-	
 	
 		
 	void Start()
@@ -84,61 +70,9 @@ public class Platformer : MonoBehaviour
 		
 		if (Jump.IsActive)
 		{
-		    //moveVec.y +=Jumpstrength;
-			 
-
-    void FixedUpdate() 
-
-    {
-
-        if (grounded) 
-
-        {
-
-            // We are grounded, so recalculate movedirection directly from axes
-
-            moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-
-            moveDirection = transform.TransformDirection(moveDirection);
-
-            moveDirection *= speed;
-
-        
-
-            if (Input.GetButton ("Jump"))  moveDirection.y = JumpSpeed;
-
-        }
-
- 
-
-        // Apply gravity
-
-        moveDirection.y -= Gravity * Time.deltaTime;
-
-    
-
-        // Move the controller
-
-        CharacterController controller = (CharacterController)GetComponent(typeof(CharacterController));
-
-        CollisionFlags flags = controller.Move(moveDirection * Time.deltaTime);
-
-        grounded = (flags & CollisionFlags.CollidedBelow) != 0;
-
-    }
-
- 
-
- 
-
- 
-
-}		
-		
-		
-		
-		
-		-----------------
+		    moveVec.y +=Jumpstrength;
+			transform.Translate(Vector3.up * 100 * Time.deltaTime);
+						
 		}
 		
         if(!prevflags.Has(CollisionFlags.CollidedBelow))
