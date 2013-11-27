@@ -3,16 +3,18 @@ using System.Collections;
 
 public class ProjectileControl : MonoBehaviour {
 
-    public float speed, lifeSpan, damage;
-    public string damageType;
+    public float speed, lifeSpan;
     public Transform explosion;
 
     protected bool closing;
+    protected Damage damage;
 
 	// Use this for initialization
 	void Start () 
     {
         StartCoroutine(Countdown());
+        damage = transform.parent.gameObject.GetComponent<Weapon>().baseDamage;
+        transform.parent = null;
 	}
 	
 	// Update is called once per frame
@@ -29,7 +31,7 @@ public class ProjectileControl : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        other.BroadcastMessage("Hit", new Damage(damage, damageType), SendMessageOptions.DontRequireReceiver);
+        other.BroadcastMessage("Hit", damage, SendMessageOptions.DontRequireReceiver);
         Destroy(this.gameObject);
     }
 
