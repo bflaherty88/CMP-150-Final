@@ -11,7 +11,8 @@ public class CustomInput : MonoBehaviour
         jump = KeyCode.Space,
         fire1 = KeyCode.Mouse0,
         fire2 = KeyCode.Mouse1,
-        activate = KeyCode.E;
+        activate = KeyCode.E,
+        start = KeyCode.Escape;
 
     public string
         xHorizontal = "Move X",
@@ -22,6 +23,8 @@ public class CustomInput : MonoBehaviour
         xFire1 = "R Trigger",
         xFire2 = "L Trigger",
         xActivate = "X Button";
+
+    public const string xStart = "Start";
     public FindAim findAim;
 
     public Vector3 AimVector { get { return InputController.controllerMode ? new Vector3(Input.GetAxis(uAimHorizontal), Input.GetAxis(uAimHorizontal)) : findAim.aim; } }
@@ -34,6 +37,7 @@ public class CustomInput : MonoBehaviour
     public string uActivate { get { return controllerString + xActivate; } }
     public string uAimHorizontal { get { return controllerString + xAimHorizontal ; } }
     public string uAimVertical { get { return controllerString + xAimHorizontal ; } }
+    public string uStart { get { return controllerString + xStart; } }
 
     public int controllerNumber = 1;
 

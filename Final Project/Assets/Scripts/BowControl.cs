@@ -14,6 +14,7 @@ public class BowControl : Weapon {
     {
         if (input == null)
             input = GetInput(gameObject);
+        baseDamage = new Damage(10, "Piercing", 1);
 	}
 	
 	// Update is called once per frame

@@ -13,6 +13,7 @@ public class ArrowControl : Weapon {
 	void Start () 
     {
         baseDamage = transform.parent.gameObject.GetComponent<Weapon>().baseDamage;
+        specialDamage = new Damage(0f, "Poision");
 	}
 	
 	// Update is called once per frame

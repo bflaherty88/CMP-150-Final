@@ -13,6 +13,7 @@ public class ConcentrationMagicControl : Weapon
     {
         if (input == null)
             input = GetInput(gameObject);
+        baseDamage = new Damage(1f, "Frost");
 	}
 	
 	// Update is called once per frame
@@ -24,6 +25,7 @@ public class ConcentrationMagicControl : Weapon
 
     void OnTriggerStay (Collider other)
     {
+        Debug.Log("Freeze");
         if (firing)
             other.gameObject.BroadcastMessage("Hit", baseDamage, SendMessageOptions.DontRequireReceiver);
     }

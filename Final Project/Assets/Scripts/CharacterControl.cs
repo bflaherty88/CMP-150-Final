@@ -1,15 +1,18 @@
 using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof(CharacterController))]
 public class CharacterControl : Character {
 
     CharacterController controller;
     Vector3 moveVec;
     public CustomInput input;
-    public float gravity = 1, drag = 1, maxSpeed = 15;
+    public float drag = 1;
 
     float moveSpeed;
+    protected static bool paused;
+    float DeltaTime { get { return Time.deltaTime; } }
+
+    public bool Paused { get { return paused; } }
 
 	void Start () 
     {
@@ -21,44 +24,50 @@ public class CharacterControl : Character {
 	// Update is called once per frame
 	void Update () 
     {
-        if (controller.isGrounded)
+        if (input.GetDown(input.start))
+            pause();
+        if (Time.deltaTime != 0)
         {
-            if (input.GetState(input.right))
+            if (controller.isGrounded)
             {
-                moveSpeed += acceleration;
-            }
-            if (input.GetState(input.left))
-                moveSpeed -= acceleration;
+                if (input.GetState(input.right))
+                {
+                    moveSpeed += acceleration;
+                }
+                if (input.GetState(input.left))
+                    moveSpeed -= acceleration;
 
-            if (moveSpeed != 0)
-                moveSpeed -= moveSpeed * drag;
+                if (moveSpeed != 0)
+                    moveSpeed -= moveSpeed * drag;
 
-            if (input.GetDown(input.jump))
-            {
-                moveVec.y += jumpHeight;
+                if (input.GetDown(input.jump))
+                {
+                    moveVec.y += jumpHeight;
+                }
+                else
+                    moveVec.y = 0;
             }
+
+            moveVec -= Vector3.up * gravity;
+
+            if (moveSpeed > maxSpeed)
+                moveSpeed = maxSpeed;
+            else if (moveSpeed < -maxSpeed)
+                moveSpeed = -maxSpeed;
+
+            moveVec.x = moveSpeed;
+
+            
+            moveVec += transform.InverseTransformDirection(knockback);
+            knockback = Vector3.zero;
+            controller.Move(moveVec * Time.deltaTime);
+
+
+            if (input.AimVector.x > transform.position.x)
+                transform.LookAt(transform.position + Vector3.right);
             else
-                moveVec.y = 0;
+                transform.LookAt(transform.position - Vector3.right);
         }
-        
-        moveVec -= Vector3.up * gravity;
-
-        if (moveSpeed > maxSpeed)
-            moveSpeed = maxSpeed;
-        else if (moveSpeed < -maxSpeed)
-            moveSpeed = -maxSpeed;
-
-        moveVec.x = moveSpeed;
-
-
-        moveVec += knockback;
-        knockback = Vector3.zero;
-        controller.Move(moveVec * Time.deltaTime);
-
-        if (input.AimVector.x > transform.position.x)
-            transform.LookAt(transform.position + Vector3.right);
-        else
-            transform.LookAt(transform.position - Vector3.right);
 	}
 
     void OnControllerColliderHit (ControllerColliderHit hit)
@@ -73,6 +82,20 @@ public class CharacterControl : Character {
             {
                 moveSpeed = 0;
             }
+        }
+    }
+
+    protected void pause()
+    {
+        if (paused)
+        {
+            Time.timeScale = 1;
+            paused = false;
+        }
+        else
+        {
+            Time.timeScale = 0;
+            paused = true;
         }
     }
 }

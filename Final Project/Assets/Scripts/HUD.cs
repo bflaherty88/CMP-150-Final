@@ -4,80 +4,87 @@ using System.Collections;
 public class HUD : MonoBehaviour 
 {
     public GameObject player;
-    public Texture healthTex;
-    public Texture staminaTex;
+    public HUDTextures textures;
     public int playerNumber;
 
-    protected bool paused;
-    protected Character playerCharacter;
+    protected CharacterControl playerCharacter;
     protected float baseHealth, baseStamina;
-    protected float screenBottom, screenLeft;
+    protected Rect viewport;
     protected int quadrant;
+    protected bool initialized;
 
 
 	void Start () 
     {
-        if (player == null)
-            player = GameObject.FindGameObjectWithTag("Player");
-
-        playerCharacter = player.GetComponent<Character>();
-        healthTex = player.GetComponent<HUDTextures>().healthTex;
-        staminaTex = player.GetComponent<HUDTextures>().staminaTex;
-        baseHealth = playerCharacter.health;
-        baseStamina = playerCharacter.stamina;
-
-        switch (InputController.PlayerCount)
-        {
-            case 1:
-                quadrant = 3;
-                break;
-            case 2:
-                quadrant = (playerNumber == 1) ? 1 : 3;
-                break;
-            case 3:
-            case 4:
-                quadrant = playerNumber;
-                break;
-
-        }
-
-        if (quadrant == 1 || quadrant == 2)
-            screenBottom = Screen.height / 2;
-        else if (quadrant == 3 || quadrant == 4)
-            screenBottom = Screen.height;
-
-        if (quadrant == 1 || quadrant == 3)
-            screenLeft = 0;
-        else if (quadrant == 2 || quadrant == 4)
-            screenLeft = Screen.width / 2;
+        
 	}
 	
 
 	void Update ()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            pause();
+        if (!initialized)
+        {
+            if (player == null)
+                player = GameObject.FindGameObjectWithTag("Player");
 
+            if (textures == null)
+                textures = gameObject.GetComponent<HUDTextures>();
+            playerCharacter = player.GetComponent<CharacterControl>();
+            baseHealth = playerCharacter.health;
+            baseStamina = playerCharacter.stamina;
+
+            switch (InputController.PlayerCount)
+            {
+                case 1:
+                    quadrant = 7;
+                    break;
+                case 2:
+                    quadrant = (playerNumber == 1) ? 5 : 6;
+                    break;
+                case 3:
+                case 4:
+                    quadrant = playerNumber;
+                    break;
+
+            }
+            
+            
+            initialized = true;
+        }
+        switch (quadrant)
+        {
+            case 1:
+                viewport = new Rect(0, 0, Screen.width / 2f, Screen.height / 2f);
+                break;
+            case 2:
+                viewport = new Rect(Screen.width / 2, 0, Screen.width / 2f, Screen.height / 2f);
+                break;
+            case 3:
+                viewport = new Rect(0, Screen.height / 2f, Screen.width / 2f, Screen.height / 2f);
+                break;
+            case 4:
+                viewport = new Rect(Screen.width / 2f, Screen.height / 2f, Screen.width / 2f, Screen.height / 2f);
+                break;
+            case 5:
+                viewport = new Rect(0, 0, Screen.width, Screen.height / 2f);
+                break;
+            case 6:
+                viewport = new Rect(0, Screen.height / 2f, Screen.width, Screen.height / 2f);
+                break;
+            case 7:
+                viewport = new Rect(0, 0, Screen.width, Screen.height);
+                break;
+        }
     }
 
     void OnGUI()
     {
-        if (!paused && playerCharacter.health > 0)
-            GUI.DrawTexture(new Rect(screenLeft + 5f, screenBottom - 15f, 100 * (playerCharacter.health / baseHealth), 5f), healthTex);
-        GUI.DrawTexture(new Rect(screenLeft + 5f, screenBottom - 10f, 100 * (playerCharacter.stamina / baseStamina), 5f), staminaTex);
-    }
-
-    void pause()
-    {
-        if (!paused)
+        if (!playerCharacter.Paused && playerCharacter.health > 0)
         {
-            Time.timeScale = 0f;
-            paused = true;
+            GUI.DrawTexture(new Rect(viewport.xMin + 5f, viewport.yMax - 15f, 100 * (playerCharacter.health / baseHealth), 5f), textures.healthTex);
+            GUI.DrawTexture(new Rect(viewport.xMin + 5f, viewport.yMax - 10f, 100 * (playerCharacter.stamina / baseStamina), 5f), textures.staminaTex);
         }
-        else
-        {
-            Time.timeScale = 1f;
-            paused = false;
-        }
+        if (playerCharacter.Paused)
+            GUI.Label(new Rect(viewport.xMin + viewport.width / 3, viewport.yMin + viewport.height / 2, viewport.width / 3f, 24f), "Player " + playerNumber);
     }
 }
