@@ -39,9 +39,9 @@ public class CustomInput : MonoBehaviour
     public string uAimVertical { get { return controllerString + xAimHorizontal ; } }
     public string uStart { get { return controllerString + xStart; } }
 
-    public int controllerNumber = 1;
+    public int playerNumber = 1;
 
-    protected string controllerString { get { return "Controller" + controllerNumber + "_"; } }
+    protected string controllerString { get { return "Controller" + playerNumber + "_"; } }
     protected bool rTriggerWasDown, lTriggerWasDown, horizontalWasRest, verticalWasRest;
     protected Event e;
 
@@ -49,7 +49,12 @@ public class CustomInput : MonoBehaviour
     {
         InputController.PlayerCount += 1;
         if (findAim == null)
-            findAim = GameObject.FindGameObjectWithTag("Camera" + controllerNumber).GetComponent<FindAim>();
+        {
+            GameObject temp = GameObject.FindGameObjectWithTag("Camera" + playerNumber);
+            if (temp != null)
+                findAim = temp.GetComponent<FindAim>();
+        }
+        
 	}
 	
 

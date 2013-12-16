@@ -14,7 +14,8 @@ public class BowControl : Weapon {
     {
         if (input == null)
             input = GetInput(gameObject);
-        baseDamage = new Damage(10, "Piercing", 1);
+        leftDamage = new Damage(10, "Piercing", new Vector3(20f, 20f));
+        rightDamage = new Damage(10, "Piercing", new Vector3(-20f, 20f));
 	}
 	
 	// Update is called once per frame

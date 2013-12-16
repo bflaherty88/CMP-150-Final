@@ -5,8 +5,8 @@ using System.Collections;
 public class Character : Controllable
 {
 
-    public float health = 100, stamina = 100, physicalResistance = 1, magicResistance = 1, knockbackResistance = 1, acceleration = 10, jumpHeight = 10;
-    public static float gravity = 1;
+    public float health = 100, stamina = 100, physicalResistance = 1, magicResistance = 1, knockbackResistance = 1, acceleration = 10, jumpHeight = 10, drag = 0.4f;
+    public static float gravity = 100, terminalVelocity = -40;
     public float maxSpeed = 1;
 
     protected Vector3 knockback;
@@ -14,7 +14,6 @@ public class Character : Controllable
 
     void Hit(Damage attack)
     {
-        Debug.Log("Hit");
         if (attack.type == "Physical")
         {
             health -= (attack.baseDamage / physicalResistance);
@@ -33,7 +32,7 @@ public class Character : Controllable
             StartCoroutine(Affect(attack));
         }
 
-        knockback += new Vector3(-1, 1) * (attack.baseKnockback / knockbackResistance);
+        knockback += attack.baseKnockback / knockbackResistance;
     }
 
     IEnumerator Affect(Damage attack)

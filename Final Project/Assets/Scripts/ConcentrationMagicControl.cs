@@ -13,7 +13,7 @@ public class ConcentrationMagicControl : Weapon
     {
         if (input == null)
             input = GetInput(gameObject);
-        baseDamage = new Damage(1f, "Frost");
+        leftDamage = new Damage(1f, "Frost", Vector3.zero);
 	}
 	
 	// Update is called once per frame
@@ -27,6 +27,6 @@ public class ConcentrationMagicControl : Weapon
     {
         Debug.Log("Freeze");
         if (firing)
-            other.gameObject.BroadcastMessage("Hit", baseDamage, SendMessageOptions.DontRequireReceiver);
+            other.gameObject.BroadcastMessage("Hit", leftDamage, SendMessageOptions.DontRequireReceiver);
     }
 }

@@ -50,7 +50,7 @@ ModelImporter:
       takeName: Default Take
       firstFrame: 0
       lastFrame: 19
-      wrapMode: 0
+      wrapMode: 8
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -92,7 +92,7 @@ ModelImporter:
       takeName: Default Take
       firstFrame: 1
       lastFrame: 8
-      wrapMode: 0
+      wrapMode: 8
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0

@@ -1,45 +1,33 @@
 using UnityEngine;
 using System.Collections;
 
-public class SwordControl : Weapon
+public class AISword : Weapon
 {
 
     protected bool swinging, waiting, wasDown;
-    public CustomInput input;
     public float attackSpeed = 1;
 
-	void Start ()
+    void Start()
     {
-        if (input == null)
-            input = GetInput(gameObject);
+        leftDamage = new Damage(baseDamage, attackType, new Vector3(baseKnockback, baseKnockback));
+        rightDamage = new Damage(baseDamage, attackType, new Vector3(-baseKnockback, baseKnockback));
+    }
 
-        leftDamage = new Damage(10f, "Physical", new Vector3(10, 10));
-        rightDamage = new Damage(10f, "Physical", new Vector3(-10, 10));
-	}
-	
-	// Update is called once per frame
-	void Update () 
+    // Update is called once per frame
+    void Update()
     {
         animation["Down"].speed = attackSpeed;
         animation["Up"].speed = attackSpeed;
         waiting = (animation["Down"].enabled || animation["Up"].enabled);
-        if (input.GetDown(input.fire1))
-            swing();
 
         swinging = animation["Down"].enabled;
 
-        if (!animation["Down"].enabled && wasDown)
-        {
+        if (animation["Down"].time > animation["Down"].length)
             animation.Play("Up");
-            wasDown = false;
-        }
-
-        wasDown = animation["Down"].enabled;
-	}
+    }
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("TriggerEnter");
         if (swinging)
         {
             if (transform.position.x < other.transform.position.x)
@@ -48,8 +36,8 @@ public class SwordControl : Weapon
                 other.gameObject.BroadcastMessage("Hit", rightDamage, SendMessageOptions.DontRequireReceiver);
         }
     }
-    
-    void swing()
+
+    public void swing()
     {
         if (!waiting)
             animation.Play("Down");

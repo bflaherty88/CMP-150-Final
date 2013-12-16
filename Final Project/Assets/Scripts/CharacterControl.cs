@@ -6,9 +6,8 @@ public class CharacterControl : Character {
     CharacterController controller;
     Vector3 moveVec;
     public CustomInput input;
-    public float drag = 1;
 
-    float moveSpeed;
+    float moveSpeed, knockbackSpeed;
     protected static bool paused;
     float DeltaTime { get { return Time.deltaTime; } }
 
@@ -26,10 +25,14 @@ public class CharacterControl : Character {
     {
         if (input.GetDown(input.start))
             pause();
+
+        knockbackSpeed += knockback.x;
+
         if (Time.deltaTime != 0)
         {
             if (controller.isGrounded)
             {
+                moveVec.y = 0;
                 if (input.GetState(input.right))
                 {
                     moveSpeed += acceleration;
@@ -44,22 +47,26 @@ public class CharacterControl : Character {
                 {
                     moveVec.y += jumpHeight;
                 }
-                else
-                    moveVec.y = 0;
+
+                if (knockbackSpeed > drag || knockbackSpeed < -drag)
+                    knockbackSpeed -= knockbackSpeed * drag;
+                else if (knockbackSpeed != 0)
+                    knockbackSpeed = 0;
             }
 
-            moveVec -= Vector3.up * gravity;
+            moveVec -= Vector3.up * gravity * Time.deltaTime;
+            if (moveVec.y < terminalVelocity)
+                moveVec.y = terminalVelocity;
 
             if (moveSpeed > maxSpeed)
                 moveSpeed = maxSpeed;
             else if (moveSpeed < -maxSpeed)
                 moveSpeed = -maxSpeed;
 
-            moveVec.x = moveSpeed;
-
-            
-            moveVec += transform.InverseTransformDirection(knockback);
+            moveVec.x = moveSpeed + knockbackSpeed;
+            moveVec.y += knockback.y;
             knockback = Vector3.zero;
+
             controller.Move(moveVec * Time.deltaTime);
 
 

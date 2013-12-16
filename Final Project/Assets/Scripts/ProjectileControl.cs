@@ -7,13 +7,14 @@ public class ProjectileControl : MonoBehaviour {
     public Transform explosion;
 
     protected bool closing;
-    protected Damage damage;
+    protected Damage leftDamage, rightDamage;
 
 	// Use this for initialization
 	void Start () 
     {
         StartCoroutine(Countdown());
-        damage = transform.parent.gameObject.GetComponent<Weapon>().baseDamage;
+        leftDamage = transform.parent.gameObject.GetComponent<Weapon>().leftDamage;
+        rightDamage = transform.parent.gameObject.GetComponent<Weapon>().rightDamage;
         transform.parent = null;
 	}
 	
@@ -31,7 +32,11 @@ public class ProjectileControl : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        other.BroadcastMessage("Hit", damage, SendMessageOptions.DontRequireReceiver);
+        if (transform.position.x < other.transform.position.x)
+            other.gameObject.BroadcastMessage("Hit", leftDamage, SendMessageOptions.DontRequireReceiver);
+        else
+            other.gameObject.BroadcastMessage("Hit", rightDamage, SendMessageOptions.DontRequireReceiver);
+
         Destroy(this.gameObject);
     }
 
