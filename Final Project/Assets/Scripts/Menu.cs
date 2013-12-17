@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Menu : MonoBehaviour 
 {
-    Texture[] content;
+    protected Texture[] content;
     public Texture[] baseTextures;
     public Texture[] activeTextures;
     public float offset, Scale = 1500;
@@ -12,15 +12,17 @@ public class Menu : MonoBehaviour
 
     protected int playerNumber;
     protected Rect viewport;
-    bool mouseMode;
-    int selected, selectedL;
-    float oldWidth, scale;
-    Rect[] elementRects;
+    protected bool mouseMode, initialized;
+    protected int selected, selectedL;
+    protected float oldWidth, scale;
+    protected Rect[] elementRects;
     Vector2 oldPos, newPos;
     Event current;
 
-	void Start () 
+	protected void OnEnable () 
     {
+        initialized = false;
+        oldWidth = 0;
         playerNumber = PlayerNumber;
 
         if (input == null)
@@ -30,12 +32,12 @@ public class Menu : MonoBehaviour
                 if (customInput.playerNumber == playerNumber)
                 {
                     input = customInput;
-                    customInput.enabled = true;
                     break;
                 }
             }
 
         }
+        input.enabled = true;
 
         content = new Texture[baseTextures.Length];
         for (int i = 0; i < baseTextures.Length; i++)
@@ -46,10 +48,11 @@ public class Menu : MonoBehaviour
 	}
 
 
-    void Update() 
+    protected void Update() 
     {
         if (Screen.width != oldWidth)
         {
+            initialized = true;
             if (InputController.PlayerCount == 1)
             {
                 scale = Scale;
@@ -121,11 +124,14 @@ public class Menu : MonoBehaviour
 
     void OnGUI()
     {
-        current = Event.current;
-        for (int i = 0; i < content.Length; i++)
+        if (initialized)
         {
-            elementRects[i] = new Rect(viewport.center.x - (content[i].width * viewport.width) / scale, viewport.center.y - (content[i].height * viewport.width) / scale + ((content[i].height * viewport.width) / (scale / 3)) * i - offset, (content[i].width * viewport.width) / (scale / 2), (content[i].height * viewport.width) / (scale / 2));
-            GUI.DrawTexture(elementRects[i], content[i]);
+            current = Event.current;
+            for (int i = 0; i < content.Length; i++)
+            {
+                elementRects[i] = new Rect(viewport.center.x - (content[i].width * viewport.width) / scale, viewport.center.y - (content[i].height * viewport.width) / scale + ((content[i].height * viewport.width) / (scale / 3)) * i - offset, (content[i].width * viewport.width) / (scale / 2), (content[i].height * viewport.width) / (scale / 2));
+                GUI.DrawTexture(elementRects[i], content[i]);
+            }
         }
     }
 

@@ -10,7 +10,9 @@ public class CameraControl : MonoBehaviour
 	
 	void Start () 
     {
-        
+        player = transform.parent.gameObject;
+        transform.parent = null;
+        playerNum = player.GetComponentInChildren<CustomInput>().playerNumber;
 	}
 	
 	

@@ -7,13 +7,15 @@ public class InputController : MonoBehaviour {
     public static int PlayerCount
     {
         get { return playerCount; }
-        set { playerCount = (value <= 4 && value > 0) ? value : playerCount; }
+        set { playerCount = (value <= 4 && value >= 0) ? value : playerCount; }
     }
 
     protected static int playerCount;
+    public static int[] playerCharacters = new int[4];
 
 	// Use this for initialization
-	void Start () {
+	void Start () 
+    {
 	
 	}
 	

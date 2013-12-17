@@ -3,7 +3,6 @@ using System.Collections;
 
 public class HUD : MonoBehaviour 
 {
-    public GameObject player;
     public HUDTextures textures;
     public int playerNumber;
 
@@ -24,12 +23,9 @@ public class HUD : MonoBehaviour
     {
         if (!initialized)
         {
-            if (player == null)
-                player = GameObject.FindGameObjectWithTag("Player");
-
             if (textures == null)
                 textures = gameObject.GetComponent<HUDTextures>();
-            playerCharacter = player.GetComponent<CharacterControl>();
+            playerCharacter = gameObject.GetComponent<CharacterControl>();
             baseHealth = playerCharacter.health;
             baseStamina = playerCharacter.stamina;
 
@@ -79,12 +75,15 @@ public class HUD : MonoBehaviour
 
     void OnGUI()
     {
-        if (!playerCharacter.Paused && playerCharacter.health > 0)
+        if (initialized)
         {
-            GUI.DrawTexture(new Rect(viewport.xMin + 5f, viewport.yMax - 15f, 100 * (playerCharacter.health / baseHealth), 5f), textures.healthTex);
-            GUI.DrawTexture(new Rect(viewport.xMin + 5f, viewport.yMax - 10f, 100 * (playerCharacter.stamina / baseStamina), 5f), textures.staminaTex);
+            if (!playerCharacter.Paused && playerCharacter.health > 0)
+            {
+                GUI.DrawTexture(new Rect(viewport.xMin + 5f, viewport.yMax - 15f, 100 * (playerCharacter.health / baseHealth), 5f), textures.healthTex);
+                GUI.DrawTexture(new Rect(viewport.xMin + 5f, viewport.yMax - 10f, 100 * (playerCharacter.stamina / baseStamina), 5f), textures.staminaTex);
+            }
+            if (playerCharacter.Paused)
+                GUI.Label(new Rect(viewport.xMin + viewport.width / 3, viewport.yMin + viewport.height / 2, viewport.width / 3f, 24f), "Player " + playerNumber);
         }
-        if (playerCharacter.Paused)
-            GUI.Label(new Rect(viewport.xMin + viewport.width / 3, viewport.yMin + viewport.height / 2, viewport.width / 3f, 24f), "Player " + playerNumber);
     }
 }

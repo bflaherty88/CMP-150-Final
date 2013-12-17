@@ -12,7 +12,8 @@ public class CustomInput : MonoBehaviour
         fire1 = KeyCode.Mouse0,
         fire2 = KeyCode.Mouse1,
         activate = KeyCode.E,
-        start = KeyCode.Escape;
+        start = KeyCode.Escape,
+        back = KeyCode.Tab;
 
     public string
         xHorizontal = "Move X",
@@ -22,12 +23,13 @@ public class CustomInput : MonoBehaviour
         xJump = "A Button",
         xFire1 = "R Trigger",
         xFire2 = "L Trigger",
-        xActivate = "X Button";
+        xActivate = "X Button",
+        xBack = "B Button";
 
     public const string xStart = "Start";
     public FindAim findAim;
 
-    public Vector3 AimVector { get { return InputController.controllerMode ? new Vector3(Input.GetAxis(uAimHorizontal), Input.GetAxis(uAimHorizontal)) : findAim.aim; } }
+    public Vector3 AimVector { get { return InputController.controllerMode ? new Vector3(Input.GetAxis(uAimHorizontal), Input.GetAxis(uAimHorizontal)) : (findAim != null ? findAim.aim : Vector3.zero); } }
 
     public string uHorizontal { get { return controllerString + xHorizontal ; } }
     public string uVertical { get { return controllerString + xVertical; } }
@@ -38,6 +40,7 @@ public class CustomInput : MonoBehaviour
     public string uAimHorizontal { get { return controllerString + xAimHorizontal ; } }
     public string uAimVertical { get { return controllerString + xAimHorizontal ; } }
     public string uStart { get { return controllerString + xStart; } }
+    public string uBack { get { return controllerString + xBack; } }
 
     public int playerNumber = 1;
 
@@ -45,21 +48,35 @@ public class CustomInput : MonoBehaviour
     protected bool rTriggerWasDown, lTriggerWasDown, horizontalWasRest, verticalWasRest;
     protected Event e;
 
-	void Start () 
+	void OnEnable () 
     {
         InputController.PlayerCount += 1;
-        if (findAim == null)
-        {
-            GameObject temp = GameObject.FindGameObjectWithTag("Camera" + playerNumber);
-            if (temp != null)
-                findAim = temp.GetComponent<FindAim>();
-        }
         
 	}
+
+    void OnDisable()
+    {
+        InputController.PlayerCount--;
+    }
+
+    void OnDestroy()
+    {
+        InputController.PlayerCount--;
+    }
 	
 
 	void Update () 
     {
+        if (findAim == null)
+        {
+            foreach (GameObject camera in GameObject.FindGameObjectsWithTag("Camera"))
+                if (camera.GetComponent<CameraControl>().playerNum == playerNumber)
+                {
+                    findAim = camera.GetComponent<FindAim>();
+                    break;
+                }
+        }
+
         rTriggerWasDown = Input.GetAxis(controllerString + "R Trigger") > 0.5f;
         lTriggerWasDown = Input.GetAxis(controllerString + "L Trigger") > 0.5f;
         horizontalWasRest = Input.GetAxis(uHorizontal) < 0.25f && Input.GetAxis(uHorizontal) > -0.25f;
@@ -106,6 +123,8 @@ public class CustomInput : MonoBehaviour
                 return Input.GetButtonDown(uFire2);
             else if (key == activate)
                 return Input.GetButtonDown(uActivate);
+            else if (key == back)
+                return Input.GetButtonDown(uBack);
             else
                 return false;
         }
@@ -133,6 +152,8 @@ public class CustomInput : MonoBehaviour
                 return Input.GetButtonUp(uFire2);
             else if (key == activate)
                 return Input.GetButtonUp(uActivate);
+            else if (key == back)
+                return Input.GetButtonUp(uBack);
             else
                 return false;
         }
@@ -160,6 +181,8 @@ public class CustomInput : MonoBehaviour
                 return Input.GetButton(uFire2);
             else if (key == activate)
                 return Input.GetButton(uActivate);
+            else if (key == back)
+                return Input.GetButton(uBack);
             else
                 return false;
         }

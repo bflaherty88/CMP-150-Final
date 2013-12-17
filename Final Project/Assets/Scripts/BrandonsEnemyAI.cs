@@ -20,12 +20,14 @@ public class BrandonsEnemyAI : Character
     {
         if (controller == null)
             controller = gameObject.GetComponent<CharacterController>();
-        players = GameObject.FindGameObjectsWithTag("Player");
     }
 
     // Update is called once per frame
     void Update()
     {
+        if ((int)Time.time % 5 == 0)
+        players = GameObject.FindGameObjectsWithTag("Player");
+
         asleep = true;
         attacking = false;
 

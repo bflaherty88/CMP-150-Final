@@ -4,7 +4,7 @@ using System.Collections;
 public class SwordControl : Weapon
 {
 
-    protected bool swinging, waiting, wasDown;
+    protected bool swinging, waiting;
     public CustomInput input;
     public float attackSpeed = 1;
 
@@ -28,18 +28,14 @@ public class SwordControl : Weapon
 
         swinging = animation["Down"].enabled;
 
-        if (!animation["Down"].enabled && wasDown)
+        if (animation["Down"].time >= animation["Down"].length)
         {
             animation.Play("Up");
-            wasDown = false;
         }
-
-        wasDown = animation["Down"].enabled;
 	}
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("TriggerEnter");
         if (swinging)
         {
             if (transform.position.x < other.transform.position.x)
