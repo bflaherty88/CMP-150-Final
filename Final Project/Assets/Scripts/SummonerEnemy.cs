@@ -4,8 +4,18 @@ using System.Collections;
 public class SummonerEnemy : BrandonsEnemyAI
 {
     public Transform Minion;
+    public float fleeDistance;
     protected Object[] minions = new Object[4];
     protected bool recharging;
+
+    protected void Update()
+    {
+        base.Update();
+
+        if (player != null)
+            if (Mathf.Abs(player.transform.position.x - transform.position.x) < fleeDistance)
+                moveSpeed += acceleration * (player.transform.position.x < transform.position.x ? 1 : -1);
+    }
 
     protected override void Attack()
     {

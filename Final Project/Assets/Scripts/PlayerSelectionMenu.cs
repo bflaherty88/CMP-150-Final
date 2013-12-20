@@ -12,15 +12,19 @@ public class PlayerSelectionMenu : Menu
                 if (nextMenu.PlayerNumber == 1)
                     nextMenu.enabled = true;
             }
+            this.enabled = false;
         }
         else
         {
+            /*
             foreach (CharacterSelection nextMenu in gameObject.GetComponents<CharacterSelection>())
             {
                 nextMenu.enabled = true;
             }
+            */
+
+            Debug.Log("Multiplayer not implemented yet");
         }
 
-        this.enabled = false;
     }
 }

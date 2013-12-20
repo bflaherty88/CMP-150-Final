@@ -13,7 +13,7 @@ public class CharacterSelection : Menu
     {
         if (!ready)
         {
-            InputController.playerCharacters[playerNumber] = selected;
+            InputController.playerCharacters[playerNumber - 1] = selected;
             base.selected = 0;
             base.selectedL = 0;
             ready = true;

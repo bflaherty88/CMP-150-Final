@@ -11,10 +11,12 @@ public class Spawner : MonoBehaviour {
 
 	void Start () 
     {
-        if (InputController.playerCharacters[playerNumber] != -1)
-            player = ((Transform)GameObject.Instantiate(characterPrefabs[InputController.playerCharacters[playerNumber]], transform.position + Vector3.up, transform.rotation)).gameObject;
+        if (InputController.playerCharacters[playerNumber - 1] != -1)
+        {
+            player = ((Transform)GameObject.Instantiate(characterPrefabs[InputController.playerCharacters[playerNumber - 1]], transform.position + Vector3.up, transform.rotation)).gameObject;
 
-        player.GetComponentInChildren<CustomInput>().playerNumber = playerNumber;
+            player.GetComponentInChildren<CustomInput>().playerNumber = playerNumber;
+        }
         Destroy(gameObject);
 	}
 	

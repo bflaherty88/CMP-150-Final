@@ -11,7 +11,7 @@ public class InputController : MonoBehaviour {
     }
 
     protected static int playerCount;
-    public static int[] playerCharacters = new int[4];
+    public static int[] playerCharacters = {-1, -1, -1, -1};
 
 	// Use this for initialization
 	void Start () 

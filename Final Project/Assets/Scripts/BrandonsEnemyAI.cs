@@ -10,7 +10,7 @@ public class BrandonsEnemyAI : Character
 
     protected bool awake, asleep, jump, attacking;
     protected Vector3 moveVector;
-    protected float moveSpeed, knockbackSpeed;
+    protected float moveSpeed, knockbackSpeed, jumpBoost;
 
     GameObject[] players;
     protected GameObject player;
@@ -18,15 +18,16 @@ public class BrandonsEnemyAI : Character
     // Use this for initialization
     void Start()
     {
+        players = GameObject.FindGameObjectsWithTag("Player");
         if (controller == null)
             controller = gameObject.GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
         if ((int)Time.time % 5 == 0)
-        players = GameObject.FindGameObjectsWithTag("Player");
+            players = GameObject.FindGameObjectsWithTag("Player");
 
         asleep = true;
         attacking = false;
@@ -43,7 +44,7 @@ public class BrandonsEnemyAI : Character
             if (awake && distance < alertFar)
                 asleep = false;
 
-            if (!attacking && Mathf.Abs(transform.position.x - player.transform.position.x) < attackDistance)
+            if (!attacking && awake && Mathf.Abs(transform.position.x - player.transform.position.x) < attackDistance)
                 attacking = true;
         }
 
@@ -71,6 +72,8 @@ public class BrandonsEnemyAI : Character
                 if (jump)
                 {
                     moveVector.y += jumpHeight;
+                    if (moveSpeed != 0)
+                        jumpBoost += jumpHeight / 5 * Mathf.Sign(moveSpeed);
                     jump = false;
                 }
 
@@ -83,6 +86,11 @@ public class BrandonsEnemyAI : Character
                     knockbackSpeed -= knockbackSpeed * drag;
                 else if (knockbackSpeed != 0)
                     knockbackSpeed = 0;
+
+                if (jumpBoost > drag || jumpBoost < -drag)
+                    jumpBoost -= jumpBoost * drag;
+                else if (jumpBoost != 0)
+                    jumpBoost = 0;
             }
 
             moveVector.y += knockback.y;
@@ -97,10 +105,10 @@ public class BrandonsEnemyAI : Character
             else if (moveSpeed < -maxSpeed)
                 moveSpeed = -maxSpeed;
 
-            moveVector.x = moveSpeed + knockbackSpeed;
+            moveVector.x = moveSpeed + knockbackSpeed + jumpBoost;
 
             controller.Move(moveVector * Time.deltaTime);
-            if (attacking)
+            if (attacking && Time.timeScale != 0)
                 Attack();
 
         if (health <= 0)

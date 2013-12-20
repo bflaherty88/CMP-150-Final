@@ -67,6 +67,7 @@ public class CustomInput : MonoBehaviour
 
 	void Update () 
     {
+
         if (findAim == null)
         {
             foreach (GameObject camera in GameObject.FindGameObjectsWithTag("Camera"))

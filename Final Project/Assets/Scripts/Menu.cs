@@ -89,7 +89,7 @@ public class Menu : MonoBehaviour
         else
             mouseMode = false;
 
-        if (input.GetDown(input.activate) || input.GetDown(input.fire1))
+        if (input.GetDown(input.activate) || input.GetDown(input.fire1) || input.GetDown(input.jump))
         {
             select(selected);
         }

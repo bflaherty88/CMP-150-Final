@@ -15,6 +15,9 @@ public class ProjectileMagicControl : Weapon
             fireRate = 1;
         if (input == null)
             input = GetInput(gameObject);
+
+        leftDamage = new Damage(baseDamage, attackType, new Vector3(baseKnockback, baseKnockback));
+        rightDamage = new Damage(baseDamage, attackType, new Vector3(-baseKnockback, baseKnockback));
 	}
 	
 	// Update is called once per frame

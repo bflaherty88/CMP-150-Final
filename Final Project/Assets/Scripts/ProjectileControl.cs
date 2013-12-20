@@ -22,6 +22,7 @@ public class ProjectileControl : MonoBehaviour {
 	void Update () 
     {
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        transform.Translate(-Vector3.forward * transform.position.z * Time.deltaTime * 10, Space.World);
 	}
 
     IEnumerator Countdown()
@@ -32,12 +33,15 @@ public class ProjectileControl : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if (transform.position.x < other.transform.position.x)
-            other.gameObject.BroadcastMessage("Hit", leftDamage, SendMessageOptions.DontRequireReceiver);
-        else
-            other.gameObject.BroadcastMessage("Hit", rightDamage, SendMessageOptions.DontRequireReceiver);
+        if (!other.isTrigger)
+        {
+            if (transform.position.x < other.transform.position.x)
+                other.gameObject.BroadcastMessage("Hit", leftDamage, SendMessageOptions.DontRequireReceiver);
+            else
+                other.gameObject.BroadcastMessage("Hit", rightDamage, SendMessageOptions.DontRequireReceiver);
 
-        Destroy(this.gameObject);
+            Destroy(this.gameObject);
+        }
     }
 
     void OnApplicationQuit()

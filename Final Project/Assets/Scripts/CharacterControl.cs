@@ -7,8 +7,10 @@ public class CharacterControl : Character {
     Vector3 moveVec;
     public CustomInput input;
 
-    float moveSpeed, knockbackSpeed;
+    float moveSpeed, knockbackSpeed, jumpBoost;
     protected static bool paused;
+    public static bool[] completed = new bool[4], dead = new bool[4];
+    
     float DeltaTime { get { return Time.deltaTime; } }
 
     public bool Paused { get { return paused; } }
@@ -18,6 +20,9 @@ public class CharacterControl : Character {
         controller = GetComponent<CharacterController>();
         if (input == null)
             input = GetInput(gameObject);
+
+        completed[input.playerNumber - 1] = false;
+        dead[input.playerNumber - 1] = false;
 	}
 	
 	// Update is called once per frame
@@ -40,18 +45,27 @@ public class CharacterControl : Character {
                 if (input.GetState(input.left))
                     moveSpeed -= acceleration;
 
-                if (moveSpeed != 0)
+                if (moveSpeed > drag || moveSpeed < -drag)
                     moveSpeed -= moveSpeed * drag;
+                else
+                    moveSpeed = 0;
 
                 if (input.GetDown(input.jump))
                 {
                     moveVec.y += jumpHeight;
+                    if (moveSpeed != 0)
+                        jumpBoost += jumpHeight / 5 * Mathf.Sign(moveSpeed);
                 }
 
                 if (knockbackSpeed > drag || knockbackSpeed < -drag)
                     knockbackSpeed -= knockbackSpeed * drag;
                 else if (knockbackSpeed != 0)
                     knockbackSpeed = 0;
+
+                if (jumpBoost > drag || jumpBoost < -drag)
+                    jumpBoost -= jumpBoost * drag;
+                else if (jumpBoost != 0)
+                    jumpBoost = 0;
             }
 
             moveVec -= Vector3.up * gravity * Time.deltaTime;
@@ -63,7 +77,7 @@ public class CharacterControl : Character {
             else if (moveSpeed < -maxSpeed)
                 moveSpeed = -maxSpeed;
 
-            moveVec.x = moveSpeed + knockbackSpeed;
+            moveVec.x = moveSpeed + knockbackSpeed + jumpBoost;
             moveVec.y += knockback.y;
             knockback = Vector3.zero;
 
@@ -75,6 +89,7 @@ public class CharacterControl : Character {
             else
                 transform.LookAt(transform.position - Vector3.right);
         }
+
 	}
 
     void OnControllerColliderHit (ControllerColliderHit hit)
@@ -103,6 +118,19 @@ public class CharacterControl : Character {
         {
             Time.timeScale = 0;
             paused = true;
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Finish")
+        {
+            completed[input.playerNumber - 1] = true;
+        }
+        else if (other.tag == "Floor")
+        {
+            dead[input.playerNumber - 1] = true;
+            Destroy(this);
         }
     }
 }
